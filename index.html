@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gamebook Progress Ending Tracker</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="app-header">
+        <button class="icon-button hidden" id="backToBooks" type="button" aria-label="Back to books">
+          &larr;
+        </button>
+        <div>
+          <p class="eyebrow">Gamebook progress</p>
+          <h1 id="appTitle">Ending Tracker</h1>
+        </div>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode">
+          Dark
+        </button>
+      </header>
+
+      <main>
+        <section id="bookListView" class="view active-view" aria-labelledby="booksHeading">
+          <div class="section-heading">
+            <div>
+              <h2 id="booksHeading">Books</h2>
+              <p>Track each branching book separately.</p>
+            </div>
+            <div class="header-actions">
+              <button class="primary-button" id="openBookForm" type="button">Add book</button>
+              <button class="ghost-button" id="exportData" type="button">Export Data</button>
+              <label class="ghost-button file-button" for="importData">Import Data</label>
+              <input id="importData" type="file" accept="application/json" />
+            </div>
+          </div>
+          <div id="bookGrid" class="book-grid"></div>
+        </section>
+
+        <section id="bookDashboardView" class="view" aria-labelledby="dashboardHeading">
+          <div class="dashboard-top">
+            <div>
+              <p class="eyebrow">Selected book</p>
+              <h2 id="dashboardHeading">Book dashboard</h2>
+            </div>
+            <div class="button-row">
+              <button class="ghost-button" id="openMapView" type="button">Visualize Map</button>
+              <button class="ghost-button" id="editBook" type="button">Edit book</button>
+              <button class="danger-button" id="deleteBook" type="button">Delete</button>
+            </div>
+          </div>
+
+          <div id="progressPanel" class="progress-panel"></div>
+
+          <div class="dashboard-grid">
+            <section class="panel" aria-labelledby="pathsHeading">
+              <div class="panel-heading">
+                <div>
+                  <h3 id="pathsHeading">Paths</h3>
+                  <p>Saved routes, drafts, and completed endings.</p>
+                </div>
+                <button class="primary-button" id="openPathForm" type="button">New path</button>
+              </div>
+              <div id="pinnedPathPanel" class="pinned-path-panel"></div>
+              <div class="filter-bar" aria-label="Path filters">
+                <label>
+                  Search path
+                  <input id="pathSearch" type="search" placeholder="Path name" />
+                </label>
+                <label>
+                  Status
+                  <select id="pathStatusFilter">
+                    <option value="all">All statuses</option>
+                    <option value="in_progress">In progress</option>
+                    <option value="reached_ending">Reached ending</option>
+                    <option value="completed">Completed</option>
+                    <option value="draft">Draft</option>
+                    <option value="abandoned">Abandoned</option>
+                  </select>
+                </label>
+              </div>
+              <div id="statusGuide" class="status-guide" aria-label="Status descriptions"></div>
+              <div id="pathList" class="path-list"></div>
+            </section>
+
+            <aside class="panel" aria-labelledby="endingsHeading">
+              <div class="panel-heading">
+                <div>
+                  <h3 id="endingsHeading">Endings</h3>
+                  <p>Tap to mark reached or unreached.</p>
+                </div>
+              </div>
+              <div id="endingGrid" class="ending-grid"></div>
+            </aside>
+          </div>
+        </section>
+
+        <section id="pathDetailView" class="view" aria-labelledby="pathDetailHeading">
+          <div class="dashboard-top">
+            <div>
+              <p class="eyebrow">Current path</p>
+              <h2 id="pathDetailHeading">Path details</h2>
+            </div>
+            <div class="button-row">
+              <button class="ghost-button" id="backToDashboard" type="button">Book dashboard</button>
+              <button class="ghost-button" id="pinCurrentPath" type="button">Pin path</button>
+              <button class="danger-button" id="deletePath" type="button">Delete path</button>
+            </div>
+          </div>
+
+          <div class="path-workspace">
+            <section class="panel" aria-labelledby="historyHeading">
+              <div class="panel-heading">
+                <div>
+                  <h3 id="historyHeading">History</h3>
+                  <p id="pathMeta">Steps already saved.</p>
+                  <p class="field-hint">Drag and drop steps to reorder them.</p>
+                </div>
+                <button class="ghost-button" id="editPathMeta" type="button">Edit</button>
+              </div>
+              <div id="stepTimeline" class="timeline"></div>
+            </section>
+
+            <section class="panel" aria-labelledby="continueHeading">
+              <div class="panel-heading">
+                <div>
+                  <h3 id="continueHeading">Continue</h3>
+                  <p>Add pages, decisions, notes, and endings.</p>
+                </div>
+              </div>
+              <form id="stepForm" class="stacked-form">
+                <div class="segmented-control" role="group" aria-label="Step type">
+                  <label>
+                    <input type="radio" name="stepType" value="page" checked />
+                    <span>Page</span>
+                  </label>
+                  <label>
+                    <input type="radio" name="stepType" value="decision" />
+                    <span>Decision</span>
+                  </label>
+                </div>
+
+                <div class="form-grid">
+                  <label>
+                    Page number
+                    <input id="stepPage" type="number" min="1" inputmode="numeric" placeholder="18" required />
+                  </label>
+                  <label class="decision-only hidden">
+                    Chosen option
+                    <input id="chosenChoice" type="text" placeholder="Open the red door" />
+                  </label>
+                </div>
+
+                <label class="decision-only hidden">
+                  All available options
+                  <textarea id="allChoices" rows="4" placeholder="One option per line"></textarea>
+                </label>
+
+                <label class="checkbox-line decision-only hidden">
+                  <input id="createDrafts" type="checkbox" checked />
+                  <span>Create draft paths for unchosen options</span>
+                </label>
+
+                <div class="form-actions">
+                  <button class="primary-button" id="stepSubmitButton" type="submit">Add step</button>
+                  <button class="ghost-button hidden" id="cancelStepEdit" type="button">Cancel edit</button>
+                </div>
+              </form>
+
+              <form id="pathStatusForm" class="stacked-form status-form">
+                <div class="form-grid status-detail-grid">
+                  <label class="status-field">
+                    Status
+                    <select id="pathStatus">
+                      <option value="in_progress">In progress</option>
+                      <option value="reached_ending">Reached ending</option>
+                      <option value="completed">Completed</option>
+                      <option value="draft">Draft</option>
+                      <option value="abandoned">Abandoned</option>
+                    </select>
+                    <span id="pathStatusHint" class="field-hint"></span>
+                  </label>
+                  <label class="ending-field">
+                    Ending reached
+                    <select id="reachedEnding"></select>
+                  </label>
+                </div>
+                <label>
+                  Notes
+                  <textarea id="pathNotes" rows="3" placeholder="Optional notes about this route"></textarea>
+                </label>
+                <button class="primary-button save-details-button" type="submit">Save details</button>
+              </form>
+            </section>
+
+            <aside class="panel" aria-labelledby="similarHeading">
+              <div class="panel-heading">
+                <div>
+                  <h3 id="similarHeading">Similar paths</h3>
+                  <p>Routes with matching early steps.</p>
+                </div>
+              </div>
+              <div id="similarPaths" class="similar-list"></div>
+            </aside>
+          </div>
+        </section>
+
+        <section id="mapView" class="view" aria-labelledby="mapHeading">
+          <div class="dashboard-top">
+            <div>
+              <p class="eyebrow">Path map</p>
+              <h2 id="mapHeading">Visualized routes</h2>
+            </div>
+            <div class="button-row">
+              <button class="ghost-button" id="backFromMap" type="button">Book dashboard</button>
+            </div>
+          </div>
+
+          <section class="panel map-panel">
+            <div class="panel-heading">
+              <div>
+                <h3>Map</h3>
+                <p id="mapSummary">Non-abandoned paths and reached endings.</p>
+              </div>
+            </div>
+            <div class="map-controls" aria-label="Map highlight controls">
+              <label>
+                Highlight path
+                <select id="mapPathFilter">
+                  <option value="all">All paths</option>
+                </select>
+              </label>
+              <label>
+                Highlight ending
+                <select id="mapEndingFilter">
+                  <option value="all">All endings</option>
+                </select>
+              </label>
+              <button class="ghost-button hidden" id="openHighlightedPath" type="button">Open highlighted path</button>
+            </div>
+            <div class="map-scroll">
+              <canvas id="pathMapCanvas" width="1200" height="720" aria-label="Path and ending map"></canvas>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <dialog id="bookDialog">
+      <form id="bookForm" method="dialog" class="modal-form">
+        <div>
+          <p class="eyebrow">Book setup</p>
+          <h2 id="bookDialogTitle">Add book</h2>
+        </div>
+        <label>
+          Book title
+          <input id="bookTitle" type="text" placeholder="House of Danger" required />
+        </label>
+        <div class="form-grid">
+          <label>
+            Total paths
+            <input id="totalPaths" type="number" min="0" inputmode="numeric" placeholder="80" />
+          </label>
+          <label>
+            Total endings
+            <input id="totalEndings" type="number" min="0" inputmode="numeric" placeholder="31" />
+          </label>
+        </div>
+        <div class="modal-actions">
+          <button class="ghost-button" value="cancel" type="button" data-close-dialog>Cancel</button>
+          <button class="primary-button" value="default" type="submit">Save book</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="pathDialog">
+      <form id="pathForm" method="dialog" class="modal-form">
+        <div>
+          <p class="eyebrow">Path setup</p>
+          <h2 id="pathDialogTitle">New path</h2>
+        </div>
+        <label>
+          Path name
+          <input id="pathName" type="text" placeholder="Path 1" />
+        </label>
+        <label>
+          Status
+          <select id="initialPathStatus">
+            <option value="in_progress">In progress</option>
+            <option value="draft">Draft</option>
+            <option value="completed">Completed</option>
+            <option value="abandoned">Abandoned</option>
+            <option value="reached_ending">Reached ending</option>
+          </select>
+          <span id="initialPathStatusHint" class="field-hint"></span>
+        </label>
+        <label>
+          Notes
+          <textarea id="initialPathNotes" rows="3" placeholder="Optional notes"></textarea>
+        </label>
+        <div class="modal-actions">
+          <button class="ghost-button" value="cancel" type="button" data-close-dialog>Cancel</button>
+          <button class="primary-button" value="default" type="submit">Save path</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="endingPathDialog">
+      <form id="endingPathForm" method="dialog" class="modal-form">
+        <div>
+          <p class="eyebrow">Ending reached</p>
+          <h2 id="endingPathDialogTitle">Link ending to path</h2>
+        </div>
+        <section class="dialog-section">
+          <h3>Already linked paths</h3>
+          <div id="endingLinkedPaths" class="compact-list"></div>
+        </section>
+        <section class="dialog-section">
+          <h3>Add paths for this ending</h3>
+          <div id="endingPathChoices" class="choice-list"></div>
+        </section>
+        <div class="modal-actions">
+          <button class="danger-button hidden" id="unmarkEndingButton" value="default" type="button">Mark unreached</button>
+          <button class="ghost-button" value="cancel" type="button" data-close-dialog>Cancel</button>
+          <button class="primary-button" value="default" type="submit">Link selected paths</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
