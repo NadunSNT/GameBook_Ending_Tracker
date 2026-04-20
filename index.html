@@ -16,8 +16,11 @@
           <p class="eyebrow">Gamebook progress</p>
           <h1 id="appTitle">Ending Tracker</h1>
         </div>
-        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode">
-          Dark
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+          <span id="themeToggleText">Dark mode</span>
+          <span class="theme-toggle-track" aria-hidden="true">
+            <span class="theme-toggle-thumb"></span>
+          </span>
         </button>
       </header>
 
@@ -33,6 +36,7 @@
               <button class="ghost-button" id="exportData" type="button">Export Data</button>
               <label class="ghost-button file-button" for="importData">Import Data</label>
               <input id="importData" type="file" accept="application/json" />
+              <button class="ghost-button" id="importSampleData" type="button">Import Sample Data</button>
             </div>
           </div>
           <div id="bookGrid" class="book-grid"></div>

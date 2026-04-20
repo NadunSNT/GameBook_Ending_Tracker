@@ -40,6 +40,7 @@ const statusDescriptions = {
 const elements = {
   appTitle: document.querySelector("#appTitle"),
   themeToggle: document.querySelector("#themeToggle"),
+  themeToggleText: document.querySelector("#themeToggleText"),
   bookListView: document.querySelector("#bookListView"),
   bookDashboardView: document.querySelector("#bookDashboardView"),
   pathDetailView: document.querySelector("#pathDetailView"),
@@ -77,6 +78,7 @@ const elements = {
   deletePath: document.querySelector("#deletePath"),
   exportData: document.querySelector("#exportData"),
   importData: document.querySelector("#importData"),
+  importSampleData: document.querySelector("#importSampleData"),
   bookDialog: document.querySelector("#bookDialog"),
   bookForm: document.querySelector("#bookForm"),
   bookDialogTitle: document.querySelector("#bookDialogTitle"),
@@ -176,12 +178,13 @@ function saveData() {
 
 function loadTheme() {
   const savedTheme = localStorage.getItem(THEME_KEY);
-  return savedTheme === "dark" ? "dark" : "light";
+  return savedTheme === "light" ? "light" : "dark";
 }
 
 function applyTheme(theme) {
   document.documentElement.dataset.theme = theme;
-  elements.themeToggle.textContent = theme === "dark" ? "Light" : "Dark";
+  elements.themeToggleText.textContent = theme === "dark" ? "Light mode" : "Dark mode";
+  elements.themeToggle.setAttribute("aria-pressed", theme === "dark" ? "true" : "false");
   elements.themeToggle.setAttribute("aria-label", theme === "dark" ? "Switch to light mode" : "Switch to dark mode");
   localStorage.setItem(THEME_KEY, theme);
 
@@ -202,6 +205,142 @@ function createEndings(totalEndings) {
     const id = String(index + 1);
     return { id, label: `Ending ${id}`, reached: false };
   });
+}
+
+function createSampleEndings(totalEndings, reachedIds = []) {
+  const reached = new Set(reachedIds.map(String));
+  return createEndings(totalEndings).map((ending) => ({
+    ...ending,
+    reached: reached.has(ending.id),
+  }));
+}
+
+function createSampleData() {
+  return {
+    books: [
+      {
+        id: "sample_book_house_of_paths",
+        title: "House of Many Doors",
+        totalPaths: 80,
+        totalEndings: 31,
+        pinnedPathId: "sample_path_red_door",
+        endings: createSampleEndings(31, ["7", "12"]),
+        paths: [
+          {
+            id: "sample_path_red_door",
+            name: "Red Door Route",
+            status: "reached_ending",
+            reachedEndingId: "7",
+            notes: "Main sample route with a completed ending.",
+            createdAt: "2026-04-20T10:00:00.000Z",
+            updatedAt: "2026-04-20T10:35:00.000Z",
+            parentPathId: "",
+            draftFromStepIndex: null,
+            draftBranchGroupId: "",
+            draftChoiceIndex: null,
+            steps: [
+              { type: "page", page: 1 },
+              {
+                type: "decision",
+                page: 4,
+                choice: "Open the red door",
+                choices: ["Open the red door", "Open the blue door", "Stay in the hallway"],
+                branchGroupId: "sample_branch_door_choice",
+              },
+              { type: "page", page: 18 },
+              {
+                type: "decision",
+                page: 18,
+                choice: "Fight",
+                choices: ["Fight", "Run", "Talk"],
+                branchGroupId: "sample_branch_encounter",
+              },
+              { type: "page", page: 42 },
+            ],
+          },
+          {
+            id: "sample_path_blue_door",
+            name: "Red Door Route - Open the blue door",
+            status: "in_progress",
+            reachedEndingId: "",
+            notes: "Branch created from the first door decision.",
+            createdAt: "2026-04-20T10:05:00.000Z",
+            updatedAt: "2026-04-20T10:20:00.000Z",
+            parentPathId: "sample_path_red_door",
+            draftFromStepIndex: 1,
+            draftBranchGroupId: "sample_branch_door_choice",
+            draftChoiceIndex: 0,
+            steps: [
+              { type: "page", page: 1 },
+              {
+                type: "decision",
+                page: 4,
+                choice: "Open the blue door",
+                choices: ["Open the red door", "Open the blue door", "Stay in the hallway"],
+                branchGroupId: "sample_branch_door_choice",
+              },
+              { type: "page", page: 11 },
+            ],
+          },
+          {
+            id: "sample_path_hallway",
+            name: "Red Door Route - Stay in the hallway",
+            status: "draft",
+            reachedEndingId: "",
+            notes: "Draft branch waiting to be continued.",
+            createdAt: "2026-04-20T10:06:00.000Z",
+            updatedAt: "2026-04-20T10:06:00.000Z",
+            parentPathId: "sample_path_red_door",
+            draftFromStepIndex: 1,
+            draftBranchGroupId: "sample_branch_door_choice",
+            draftChoiceIndex: 1,
+            steps: [
+              { type: "page", page: 1 },
+              {
+                type: "decision",
+                page: 4,
+                choice: "Stay in the hallway",
+                choices: ["Open the red door", "Open the blue door", "Stay in the hallway"],
+                branchGroupId: "sample_branch_door_choice",
+              },
+            ],
+          },
+          {
+            id: "sample_path_talk",
+            name: "Peaceful Talk Route",
+            status: "reached_ending",
+            reachedEndingId: "12",
+            notes: "A second completed path to demonstrate shared endings and map highlights.",
+            createdAt: "2026-04-20T11:00:00.000Z",
+            updatedAt: "2026-04-20T11:25:00.000Z",
+            parentPathId: "",
+            draftFromStepIndex: null,
+            draftBranchGroupId: "",
+            draftChoiceIndex: null,
+            steps: [
+              { type: "page", page: 1 },
+              {
+                type: "decision",
+                page: 4,
+                choice: "Open the red door",
+                choices: ["Open the red door", "Open the blue door", "Stay in the hallway"],
+                branchGroupId: "sample_branch_door_choice",
+              },
+              { type: "page", page: 18 },
+              {
+                type: "decision",
+                page: 18,
+                choice: "Talk",
+                choices: ["Fight", "Run", "Talk"],
+                branchGroupId: "sample_branch_encounter",
+              },
+              { type: "page", page: 30 },
+            ],
+          },
+        ],
+      },
+    ],
+  };
 }
 
 function reconcileEndings(book, nextTotal) {
@@ -1571,6 +1710,21 @@ function importData(event) {
   reader.readAsText(file);
 }
 
+function importSampleData() {
+  const replace = !state.data.books.length || window.confirm("Importing sample data will replace your current Ending Tracker data. Continue?");
+  if (!replace) return;
+
+  state.data = normalizeData(createSampleData());
+  state.selectedBookId = state.data.books[0]?.id || null;
+  state.selectedPathId = null;
+  state.showingMap = false;
+  state.pathFilters = { query: "", status: "all" };
+  state.mapFilters = { pathId: "all", endingId: "all" };
+  saveData();
+  render();
+  showToast("Sample data imported.");
+}
+
 function escapeHtml(value) {
   return String(value)
     .replaceAll("&", "&amp;")
@@ -1609,6 +1763,7 @@ function addEventListeners() {
   });
   elements.exportData.addEventListener("click", exportData);
   elements.importData.addEventListener("change", importData);
+  elements.importSampleData.addEventListener("click", importSampleData);
   elements.pathSearch.addEventListener("input", () => {
     state.pathFilters.query = elements.pathSearch.value;
     const book = getSelectedBook();

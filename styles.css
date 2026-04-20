@@ -366,10 +366,6 @@ dialog {
   padding: clamp(16px, 2.2vw, 22px);
 }
 
-.path-card {
-  padding-top: clamp(18px, 2.4vw, 24px);
-}
-
 .panel-heading {
   justify-content: space-between;
   margin-bottom: 18px;
@@ -393,10 +389,6 @@ dialog {
   background: var(--primary);
   content: "";
   opacity: 0.85;
-}
-
-.path-card::before {
-  display: none;
 }
 
 .book-card:hover,
@@ -614,12 +606,15 @@ dialog {
 }
 
 .theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
   min-height: 38px;
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--surface);
   color: var(--text);
-  padding: 0 14px;
+  padding: 4px 12px 4px 5px;
   font-size: 0.86rem;
   font-weight: 850;
   box-shadow: var(--shadow-soft);
@@ -627,6 +622,54 @@ dialog {
 
 .theme-toggle:hover {
   border-color: var(--primary);
+}
+
+.theme-toggle[aria-pressed="false"] #themeToggleText {
+  order: 2;
+}
+
+.theme-toggle[aria-pressed="false"] .theme-toggle-track {
+  order: 1;
+}
+
+.theme-toggle[aria-pressed="true"] #themeToggleText {
+  order: 1;
+}
+
+.theme-toggle[aria-pressed="true"] .theme-toggle-track {
+  order: 2;
+}
+
+.theme-toggle-track {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: 42px;
+  height: 24px;
+  border-radius: 999px;
+  background: #dfe8e4;
+  box-shadow: inset 0 1px 3px rgba(17, 25, 31, 0.14);
+}
+
+.theme-toggle-thumb {
+  position: absolute;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 2px 7px rgba(17, 25, 31, 0.2);
+  transition:
+    transform 180ms ease,
+    background 180ms ease;
+}
+
+.theme-toggle[aria-pressed="true"] .theme-toggle-track {
+  background: var(--primary);
+}
+
+.theme-toggle[aria-pressed="true"] .theme-toggle-thumb {
+  transform: translateX(18px);
 }
 
 .file-button {

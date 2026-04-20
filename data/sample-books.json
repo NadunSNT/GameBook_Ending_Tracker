@@ -1,0 +1,157 @@
+{
+  "books": [
+    {
+      "id": "sample_book_house_of_paths",
+      "title": "House of Many Doors",
+      "totalPaths": 80,
+      "totalEndings": 31,
+      "pinnedPathId": "sample_path_red_door",
+      "endings": [
+        { "id": "1", "label": "Ending 1", "reached": false },
+        { "id": "2", "label": "Ending 2", "reached": false },
+        { "id": "3", "label": "Ending 3", "reached": false },
+        { "id": "4", "label": "Ending 4", "reached": false },
+        { "id": "5", "label": "Ending 5", "reached": false },
+        { "id": "6", "label": "Ending 6", "reached": false },
+        { "id": "7", "label": "Ending 7", "reached": true },
+        { "id": "8", "label": "Ending 8", "reached": false },
+        { "id": "9", "label": "Ending 9", "reached": false },
+        { "id": "10", "label": "Ending 10", "reached": false },
+        { "id": "11", "label": "Ending 11", "reached": false },
+        { "id": "12", "label": "Ending 12", "reached": true },
+        { "id": "13", "label": "Ending 13", "reached": false },
+        { "id": "14", "label": "Ending 14", "reached": false },
+        { "id": "15", "label": "Ending 15", "reached": false },
+        { "id": "16", "label": "Ending 16", "reached": false },
+        { "id": "17", "label": "Ending 17", "reached": false },
+        { "id": "18", "label": "Ending 18", "reached": false },
+        { "id": "19", "label": "Ending 19", "reached": false },
+        { "id": "20", "label": "Ending 20", "reached": false },
+        { "id": "21", "label": "Ending 21", "reached": false },
+        { "id": "22", "label": "Ending 22", "reached": false },
+        { "id": "23", "label": "Ending 23", "reached": false },
+        { "id": "24", "label": "Ending 24", "reached": false },
+        { "id": "25", "label": "Ending 25", "reached": false },
+        { "id": "26", "label": "Ending 26", "reached": false },
+        { "id": "27", "label": "Ending 27", "reached": false },
+        { "id": "28", "label": "Ending 28", "reached": false },
+        { "id": "29", "label": "Ending 29", "reached": false },
+        { "id": "30", "label": "Ending 30", "reached": false },
+        { "id": "31", "label": "Ending 31", "reached": false }
+      ],
+      "paths": [
+        {
+          "id": "sample_path_red_door",
+          "name": "Red Door Route",
+          "status": "reached_ending",
+          "reachedEndingId": "7",
+          "notes": "Main sample route with a completed ending.",
+          "createdAt": "2026-04-20T10:00:00.000Z",
+          "updatedAt": "2026-04-20T10:35:00.000Z",
+          "parentPathId": "",
+          "draftFromStepIndex": null,
+          "draftBranchGroupId": "",
+          "draftChoiceIndex": null,
+          "steps": [
+            { "type": "page", "page": 1 },
+            {
+              "type": "decision",
+              "page": 4,
+              "choice": "Open the red door",
+              "choices": ["Open the red door", "Open the blue door", "Stay in the hallway"],
+              "branchGroupId": "sample_branch_door_choice"
+            },
+            { "type": "page", "page": 18 },
+            {
+              "type": "decision",
+              "page": 18,
+              "choice": "Fight",
+              "choices": ["Fight", "Run", "Talk"],
+              "branchGroupId": "sample_branch_encounter"
+            },
+            { "type": "page", "page": 42 }
+          ]
+        },
+        {
+          "id": "sample_path_blue_door",
+          "name": "Red Door Route - Open the blue door",
+          "status": "in_progress",
+          "reachedEndingId": "",
+          "notes": "Branch created from the first door decision.",
+          "createdAt": "2026-04-20T10:05:00.000Z",
+          "updatedAt": "2026-04-20T10:20:00.000Z",
+          "parentPathId": "sample_path_red_door",
+          "draftFromStepIndex": 1,
+          "draftBranchGroupId": "sample_branch_door_choice",
+          "draftChoiceIndex": 0,
+          "steps": [
+            { "type": "page", "page": 1 },
+            {
+              "type": "decision",
+              "page": 4,
+              "choice": "Open the blue door",
+              "choices": ["Open the red door", "Open the blue door", "Stay in the hallway"],
+              "branchGroupId": "sample_branch_door_choice"
+            },
+            { "type": "page", "page": 11 }
+          ]
+        },
+        {
+          "id": "sample_path_hallway",
+          "name": "Red Door Route - Stay in the hallway",
+          "status": "draft",
+          "reachedEndingId": "",
+          "notes": "Draft branch waiting to be continued.",
+          "createdAt": "2026-04-20T10:06:00.000Z",
+          "updatedAt": "2026-04-20T10:06:00.000Z",
+          "parentPathId": "sample_path_red_door",
+          "draftFromStepIndex": 1,
+          "draftBranchGroupId": "sample_branch_door_choice",
+          "draftChoiceIndex": 1,
+          "steps": [
+            { "type": "page", "page": 1 },
+            {
+              "type": "decision",
+              "page": 4,
+              "choice": "Stay in the hallway",
+              "choices": ["Open the red door", "Open the blue door", "Stay in the hallway"],
+              "branchGroupId": "sample_branch_door_choice"
+            }
+          ]
+        },
+        {
+          "id": "sample_path_talk",
+          "name": "Peaceful Talk Route",
+          "status": "reached_ending",
+          "reachedEndingId": "12",
+          "notes": "A second completed path to demonstrate shared endings and map highlights.",
+          "createdAt": "2026-04-20T11:00:00.000Z",
+          "updatedAt": "2026-04-20T11:25:00.000Z",
+          "parentPathId": "",
+          "draftFromStepIndex": null,
+          "draftBranchGroupId": "",
+          "draftChoiceIndex": null,
+          "steps": [
+            { "type": "page", "page": 1 },
+            {
+              "type": "decision",
+              "page": 4,
+              "choice": "Open the red door",
+              "choices": ["Open the red door", "Open the blue door", "Stay in the hallway"],
+              "branchGroupId": "sample_branch_door_choice"
+            },
+            { "type": "page", "page": 18 },
+            {
+              "type": "decision",
+              "page": 18,
+              "choice": "Talk",
+              "choices": ["Fight", "Run", "Talk"],
+              "branchGroupId": "sample_branch_encounter"
+            },
+            { "type": "page", "page": 30 }
+          ]
+        }
+      ]
+    }
+  ]
+}
