@@ -230,7 +230,20 @@ function openGuideDialog({ markSeen = false } = {}) {
 
   if (elements.guideDialog.open) return;
   elements.guideDialog.showModal();
-  elements.guideDialog.querySelector(".guide-form")?.scrollTo({ top: 0, left: 0 });
+  resetGuideScroll();
+}
+
+function resetGuideScroll() {
+  const guideForm = elements.guideDialog.querySelector(".guide-form");
+
+  guideForm?.focus({ preventScroll: true });
+  elements.guideDialog.scrollTo({ top: 0, left: 0 });
+  guideForm?.scrollTo({ top: 0, left: 0 });
+
+  window.requestAnimationFrame(() => {
+    elements.guideDialog.scrollTo({ top: 0, left: 0 });
+    guideForm?.scrollTo({ top: 0, left: 0 });
+  });
 }
 
 function showFirstRunGuide() {
