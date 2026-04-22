@@ -19,6 +19,8 @@ const state = {
     query: "",
     status: "all",
   },
+  dashboardTab: "paths",
+  pathDetailTab: "history",
 };
 
 const statusLabels = {
@@ -48,6 +50,10 @@ const elements = {
   bookGrid: document.querySelector("#bookGrid"),
   progressPanel: document.querySelector("#progressPanel"),
   pathList: document.querySelector("#pathList"),
+  dashboardTabs: document.querySelectorAll("[data-dashboard-tab]"),
+  dashboardTabPanels: document.querySelectorAll(".dashboard-tab-panel"),
+  pathDetailTabs: document.querySelectorAll("[data-path-tab]"),
+  pathDetailTabPanels: document.querySelectorAll(".path-detail-tab-panel"),
   pinnedPathPanel: document.querySelector("#pinnedPathPanel"),
   pathSearch: document.querySelector("#pathSearch"),
   pathStatusFilter: document.querySelector("#pathStatusFilter"),
@@ -437,10 +443,24 @@ function renderDashboard(book) {
   elements.pathSearch.value = state.pathFilters.query;
   elements.pathStatusFilter.value = state.pathFilters.status;
   elements.statusGuide.innerHTML = renderStatusGuide();
+  updateDashboardTabs();
   renderPathList(book);
   elements.endingGrid.innerHTML = book.endings.length
     ? book.endings.map(renderEndingButton).join("")
     : emptyState("Set an ending count to track numbered endings.");
+}
+
+function updateDashboardTabs() {
+  elements.dashboardTabs.forEach((tab) => {
+    const isActive = tab.dataset.dashboardTab === state.dashboardTab;
+    tab.classList.toggle("active", isActive);
+    tab.setAttribute("aria-selected", String(isActive));
+  });
+
+  elements.dashboardTabPanels.forEach((panel) => {
+    const isActive = panel.id === `${state.dashboardTab}Panel`;
+    panel.classList.toggle("active", isActive);
+  });
 }
 
 function renderStatusGuide() {
@@ -610,6 +630,7 @@ function renderPathDetail(book, path) {
   elements.pathDetailHeading.textContent = path.name;
   elements.pathMeta.textContent = `${statusLabels[path.status]} - ${path.steps.length} steps`;
   elements.pinCurrentPath.textContent = book.pinnedPathId === path.id ? "Unpin path" : "Pin path";
+  updatePathDetailTabs();
   elements.stepTimeline.innerHTML = path.steps.length
     ? path.steps.map(renderStep).join("")
     : emptyState("No steps yet. Add the first page you read.");
@@ -620,6 +641,19 @@ function renderPathDetail(book, path) {
   syncStepEditorState();
   renderEndingSelect(book, path.reachedEndingId);
   elements.similarPaths.innerHTML = renderSimilarPaths(book, path);
+}
+
+function updatePathDetailTabs() {
+  elements.pathDetailTabs.forEach((tab) => {
+    const isActive = tab.dataset.pathTab === state.pathDetailTab;
+    tab.classList.toggle("active", isActive);
+    tab.setAttribute("aria-selected", String(isActive));
+  });
+
+  elements.pathDetailTabPanels.forEach((panel) => {
+    const isActive = panel.id === `${state.pathDetailTab}Panel`;
+    panel.classList.toggle("active", isActive);
+  });
 }
 
 function renderEndingSelect(book, selectedEndingId) {
@@ -1141,6 +1175,7 @@ function handlePathSubmit(event) {
     };
     book.paths.unshift(path);
     state.selectedPathId = path.id;
+    state.pathDetailTab = "continue";
   }
 
   saveData();
@@ -1867,9 +1902,21 @@ function addEventListeners() {
     const pathButton = event.target.closest("[data-select-path]");
     const pinPathButton = event.target.closest("[data-pin-path]");
     const endingButton = event.target.closest("[data-toggle-ending]");
+    const dashboardTabButton = event.target.closest("[data-dashboard-tab]");
+    const pathTabButton = event.target.closest("[data-path-tab]");
     const editStepButton = event.target.closest("[data-edit-step]");
     const deleteStepButton = event.target.closest("[data-delete-step]");
     const closeDialog = event.target.closest("[data-close-dialog]");
+
+    if (dashboardTabButton) {
+      state.dashboardTab = dashboardTabButton.dataset.dashboardTab;
+      updateDashboardTabs();
+    }
+
+    if (pathTabButton) {
+      state.pathDetailTab = pathTabButton.dataset.pathTab;
+      updatePathDetailTabs();
+    }
 
     if (bookButton) {
       state.selectedBookId = bookButton.dataset.selectBook;
@@ -1883,6 +1930,7 @@ function addEventListeners() {
       state.selectedPathId = pathButton.dataset.selectPath;
       state.showingMap = false;
       state.editingStepIndex = null;
+      state.pathDetailTab = "history";
       render();
     }
 

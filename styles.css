@@ -278,6 +278,11 @@ p {
   align-items: start;
 }
 
+.mobile-dashboard-tabs,
+.mobile-path-tabs {
+  display: none;
+}
+
 .path-workspace {
   grid-template-columns: minmax(280px, 0.9fr) minmax(320px, 1fr) minmax(250px, 0.75fr);
   align-items: stretch;
@@ -1135,10 +1140,92 @@ dialog::backdrop {
     grid-template-columns: 1fr;
   }
 
+  .mobile-dashboard-tabs,
+  .mobile-path-tabs {
+    display: grid;
+    gap: 6px;
+    margin: 0 0 16px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface-soft);
+    padding: 5px;
+  }
+
+  .mobile-dashboard-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mobile-path-tabs {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .mobile-tab {
+    min-height: 42px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--muted);
+    font-weight: 850;
+  }
+
+  .mobile-tab.active {
+    border-color: var(--line);
+    background: var(--surface);
+    color: var(--primary-dark);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .dashboard-grid > .dashboard-tab-panel,
+  .path-workspace > .path-detail-tab-panel {
+    display: none;
+  }
+
+  .dashboard-grid > .dashboard-tab-panel.active {
+    display: block;
+  }
+
+  .path-workspace > .path-detail-tab-panel.active {
+    display: flex;
+  }
+
+  .path-workspace,
+  .path-workspace > .panel,
+  .path-workspace form,
+  .path-workspace label,
+  .path-workspace input,
+  .path-workspace select,
+  .path-workspace textarea,
+  .segmented-control,
+  .checkbox-line span {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .checkbox-line span {
+    overflow-wrap: anywhere;
+  }
+
+  .path-list,
+  .ending-grid,
+  .path-workspace .timeline,
+  .path-workspace .similar-list {
+    max-height: none;
+    height: auto;
+    overflow-y: visible;
+    overscroll-behavior: auto;
+    padding-right: 0;
+  }
+
   .path-workspace > .panel {
     height: auto;
     min-height: auto;
     overflow: visible;
+  }
+
+  .path-workspace > .panel:nth-child(2) {
+    overflow-x: clip;
+    overflow-y: visible;
+    overscroll-behavior: auto;
   }
 
   .app-header,
@@ -1196,6 +1283,10 @@ dialog::backdrop {
     width: 100%;
   }
 
+  .mobile-tab {
+    width: auto;
+  }
+
   .button-row,
   .header-actions,
   .modal-actions {
@@ -1241,14 +1332,6 @@ dialog::backdrop {
 
   .ending-button {
     min-height: 48px;
-  }
-
-  .path-list {
-    max-height: 58vh;
-  }
-
-  .ending-grid {
-    max-height: 46vh;
   }
 
   .timeline,

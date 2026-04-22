@@ -57,8 +57,33 @@
 
           <div id="progressPanel" class="progress-panel"></div>
 
+          <div class="mobile-dashboard-tabs" role="tablist" aria-label="Dashboard sections">
+            <button
+              class="mobile-tab active"
+              id="pathsTab"
+              type="button"
+              role="tab"
+              aria-selected="true"
+              aria-controls="pathsPanel"
+              data-dashboard-tab="paths"
+            >
+              Paths
+            </button>
+            <button
+              class="mobile-tab"
+              id="endingsTab"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="endingsPanel"
+              data-dashboard-tab="endings"
+            >
+              Endings
+            </button>
+          </div>
+
           <div class="dashboard-grid">
-            <section class="panel" aria-labelledby="pathsHeading">
+            <section id="pathsPanel" class="panel dashboard-tab-panel active" role="tabpanel" aria-labelledby="pathsTab">
               <div class="panel-heading">
                 <div>
                   <h3 id="pathsHeading">Paths</h3>
@@ -88,7 +113,7 @@
               <div id="pathList" class="path-list"></div>
             </section>
 
-            <aside class="panel" aria-labelledby="endingsHeading">
+            <aside id="endingsPanel" class="panel dashboard-tab-panel" role="tabpanel" aria-labelledby="endingsTab">
               <div class="panel-heading">
                 <div>
                   <h3 id="endingsHeading">Endings</h3>
@@ -113,8 +138,44 @@
             </div>
           </div>
 
+          <div class="mobile-path-tabs" role="tablist" aria-label="Path sections">
+            <button
+              class="mobile-tab active"
+              id="historyTab"
+              type="button"
+              role="tab"
+              aria-selected="true"
+              aria-controls="historyPanel"
+              data-path-tab="history"
+            >
+              History
+            </button>
+            <button
+              class="mobile-tab"
+              id="continueTab"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="continuePanel"
+              data-path-tab="continue"
+            >
+              Continue
+            </button>
+            <button
+              class="mobile-tab"
+              id="similarTab"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="similarPanel"
+              data-path-tab="similar"
+            >
+              Similar
+            </button>
+          </div>
+
           <div class="path-workspace">
-            <section class="panel" aria-labelledby="historyHeading">
+            <section id="historyPanel" class="panel path-detail-tab-panel active" role="tabpanel" aria-labelledby="historyTab">
               <div class="panel-heading">
                 <div>
                   <h3 id="historyHeading">History</h3>
@@ -126,7 +187,7 @@
               <div id="stepTimeline" class="timeline"></div>
             </section>
 
-            <section class="panel" aria-labelledby="continueHeading">
+            <section id="continuePanel" class="panel path-detail-tab-panel" role="tabpanel" aria-labelledby="continueTab">
               <div class="panel-heading">
                 <div>
                   <h3 id="continueHeading">Continue</h3>
@@ -198,7 +259,7 @@
               </form>
             </section>
 
-            <aside class="panel" aria-labelledby="similarHeading">
+            <aside id="similarPanel" class="panel path-detail-tab-panel" role="tabpanel" aria-labelledby="similarTab">
               <div class="panel-heading">
                 <div>
                   <h3 id="similarHeading">Similar paths</h3>
