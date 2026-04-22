@@ -16,12 +16,15 @@
           <p class="eyebrow">Gamebook progress</p>
           <h1 id="appTitle">Ending Tracker</h1>
         </div>
-        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
-          <span id="themeToggleText">Dark mode</span>
-          <span class="theme-toggle-track" aria-hidden="true">
-            <span class="theme-toggle-thumb"></span>
-          </span>
-        </button>
+        <div class="top-actions">
+          <button class="ghost-button guide-button" id="openGuide" type="button">Guide</button>
+          <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" aria-pressed="false">
+            <span id="themeToggleText">Dark mode</span>
+            <span class="theme-toggle-track" aria-hidden="true">
+              <span class="theme-toggle-thumb"></span>
+            </span>
+          </button>
+        </div>
       </header>
 
       <main>
@@ -389,6 +392,64 @@
           <button class="danger-button hidden" id="unmarkEndingButton" value="default" type="button">Mark unreached</button>
           <button class="ghost-button" value="cancel" type="button" data-close-dialog>Cancel</button>
           <button class="primary-button" value="default" type="submit">Link selected paths</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="guideDialog">
+      <form method="dialog" class="modal-form guide-form">
+        <div>
+          <p class="eyebrow">Quick start</p>
+          <h2>How Ending Tracker works</h2>
+        </div>
+        <div class="guide-steps">
+          <section>
+            <h3>1. Add your book</h3>
+            <p>Start with Add book. Enter the title, then add the total path count and ending count if your book provides them. Ending numbers are created automatically from the total ending count, and each book keeps its own paths, endings, progress, and map.</p>
+          </section>
+          <section>
+            <h3>2. Create a path</h3>
+            <p>Open a book and choose New path. A path is one route through the story. Use In progress for an active route, Draft for a saved branch, Completed for a finished route without a numbered ending, Reached ending when it links to an ending, and Abandoned for routes you stopped tracking.</p>
+          </section>
+          <section>
+            <h3>3. Add page and decision steps</h3>
+            <p>Inside a path, use Continue to add steps in reading order. Add a Page step when you arrive on a page. Add a Decision step when the book asks you to choose, then enter the page number and the selected choice you followed.</p>
+          </section>
+          <section>
+            <h3>4. Create draft branches automatically</h3>
+            <p>For a decision, enter every available option in All available options, one option per line. Keep Create draft paths for unchosen options turned on. When you save the decision, the selected choice stays in the current path and the other choices become Draft paths that inherit the same history up to that decision.</p>
+          </section>
+          <section>
+            <h3>5. Resume from any saved branch</h3>
+            <p>Draft paths appear in the path list. Open one to continue from the exact decision point where it was created, instead of starting over from page 1. Pin a path when you want it to stay easy to find as your current route.</p>
+          </section>
+          <section>
+            <h3>6. Review and reorder history</h3>
+            <p>The History tab shows every saved step. Use Edit or Delete on a step if something was entered incorrectly. Drag and drop steps in History to reorder them when needed; linked draft branches are updated so their inherited history stays aligned.</p>
+          </section>
+          <section>
+            <h3>7. Mark endings reached</h3>
+            <p>When a path reaches a numbered ending, choose the ending in the path details and save. You can also tap an ending from the Endings grid to link it to existing paths, mark it reached, or mark it unreached again.</p>
+          </section>
+          <section>
+            <h3>8. Track progress</h3>
+            <p>The dashboard shows paths discovered, endings reached, completion percentage, active paths, draft branches, and finished paths. Counts update as you add paths, save drafts, complete routes, and link endings.</p>
+          </section>
+          <section>
+            <h3>9. Find similar paths</h3>
+            <p>Open a path and check Similar. The app compares early steps and shows other routes with matching page and decision history, which helps you avoid repeating the same route by accident.</p>
+          </section>
+          <section>
+            <h3>10. Visualize the path map</h3>
+            <p>Use Visualize Map from the book dashboard to see active routes as a branching map. Filter by path or reached ending, then open a highlighted path when you want to inspect or continue it.</p>
+          </section>
+          <section>
+            <h3>11. Back up your progress</h3>
+            <p>Your data autosaves in this browser with localStorage. Use Export Data to download a backup JSON file, and Import Data to restore or move your tracker to another browser.</p>
+          </section>
+        </div>
+        <div class="modal-actions">
+          <button class="primary-button" value="default" type="submit">Got it</button>
         </div>
       </form>
     </dialog>

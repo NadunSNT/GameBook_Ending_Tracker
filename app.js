@@ -1,5 +1,7 @@
 const STORAGE_KEY = "endingTrackerData_v1";
 const THEME_KEY = "endingTrackerTheme_v1";
+const GUIDE_COOKIE = "endingTrackerGuideSeen";
+const GUIDE_FALLBACK_KEY = "endingTrackerGuideSeen_v1";
 
 const state = {
   data: { books: [] },
@@ -43,6 +45,8 @@ const elements = {
   appTitle: document.querySelector("#appTitle"),
   themeToggle: document.querySelector("#themeToggle"),
   themeToggleText: document.querySelector("#themeToggleText"),
+  openGuide: document.querySelector("#openGuide"),
+  guideDialog: document.querySelector("#guideDialog"),
   bookListView: document.querySelector("#bookListView"),
   bookDashboardView: document.querySelector("#bookDashboardView"),
   pathDetailView: document.querySelector("#pathDetailView"),
@@ -203,6 +207,34 @@ function applyTheme(theme) {
 function toggleTheme() {
   const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
   applyTheme(nextTheme);
+}
+
+function hasSeenGuide() {
+  const cookieSeen = document.cookie
+    .split(";")
+    .map((item) => item.trim())
+    .includes(`${GUIDE_COOKIE}=true`);
+
+  return cookieSeen || localStorage.getItem(GUIDE_FALLBACK_KEY) === "true";
+}
+
+function markGuideSeen() {
+  document.cookie = `${GUIDE_COOKIE}=true; max-age=31536000; path=/; SameSite=Lax`;
+  localStorage.setItem(GUIDE_FALLBACK_KEY, "true");
+}
+
+function openGuideDialog({ markSeen = false } = {}) {
+  if (markSeen) {
+    markGuideSeen();
+  }
+
+  if (elements.guideDialog.open) return;
+  elements.guideDialog.showModal();
+}
+
+function showFirstRunGuide() {
+  if (hasSeenGuide()) return;
+  openGuideDialog({ markSeen: true });
 }
 
 function createEndings(totalEndings) {
@@ -1782,6 +1814,7 @@ function showToast(message) {
 
 function addEventListeners() {
   elements.themeToggle.addEventListener("click", toggleTheme);
+  elements.openGuide.addEventListener("click", () => openGuideDialog());
   elements.openBookForm.addEventListener("click", () => openBookDialog());
   elements.editBook.addEventListener("click", () => openBookDialog(getSelectedBook()));
   elements.openPathForm.addEventListener("click", () => openPathDialog());
@@ -2015,3 +2048,4 @@ state.data = loadData();
 addEventListeners();
 applyTheme(loadTheme());
 render();
+window.requestAnimationFrame(showFirstRunGuide);
