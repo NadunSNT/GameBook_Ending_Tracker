@@ -230,6 +230,7 @@ function openGuideDialog({ markSeen = false } = {}) {
 
   if (elements.guideDialog.open) return;
   elements.guideDialog.showModal();
+  elements.guideDialog.querySelector(".guide-form")?.scrollTo({ top: 0, left: 0 });
 }
 
 function showFirstRunGuide() {
